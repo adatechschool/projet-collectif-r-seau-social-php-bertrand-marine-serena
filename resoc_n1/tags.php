@@ -59,7 +59,7 @@
                     <h3>Présentation</h3>
                     <p>Sur cette page vous trouverez les derniers messages comportant
                         le mot-clé <?php echo $tag['label']; ?>
-                        (n° <?php echo $tagId; ?>)
+                        (n°<?php echo $tag['id']?>)
                     </p>
 
                 </section>
@@ -95,11 +95,10 @@
                  */
                 while ($post = $lesInformations->fetch_assoc())
                 {
-
-                    echo "<pre>" . print_r($post, 1) . "</pre>";
-                    echo "<pre>" . print_r(explode(",", '"'.$post['taglistid'].'"')) . "</pre>";
-                    $explode = explode(",", '"'.$post['taglist'].'"');
-                    $explodeid = explode(",", '"'.$post['taglistid'].'"');
+                    //echo "<pre>" . print_r($post, 1) . "</pre>";
+                    //echo "<pre>" . print_r(explode(",", $post['taglistid'])) . "</pre>";
+                    $explode = explode(",", $post['taglist']);
+                    $explodeid = explode(",", $post['taglistid']);
                 ?>
                     <article>
                         <h3>
@@ -111,8 +110,13 @@
                         </div>
                         <footer>
                             <small>♥ <?php echo $post["like_number"]; ?></small>
-                            <a href="tags.php?tags_id=<?php echo $explodeid[0]; ?>"><?php echo $explode[0]; ?></a>,
-                            <a href="tags.php?tags_id=<?php echo $explodeid[1]; ?>"><?php echo $explode[1]; ?></a>
+                            <?php if (count($explodeid) > 1): 
+                                for ($i = 0; $i < count($explodeid); $i++) { ?>
+                                <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
+                                <?php ;} ?>
+                            <?php else: ?>
+                                <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
+                            <?php endif ?>
                         </footer>
                     </article>
                 <?php } ?>
