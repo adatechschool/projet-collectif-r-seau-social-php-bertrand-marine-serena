@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title>ReSoC - Les message par mot-clé</title> 
+        <title>ReSoC - Les message par mot-clé</title>
         <meta name="author" content="Julien Falconnet">
         <link rel="stylesheet" href="style.css"/>
     </head>
@@ -28,7 +28,7 @@
         <div id="wrapper">
             <?php
             /**
-             * Cette page est similaire à wall.php ou feed.php 
+             * Cette page est similaire à wall.php ou feed.php
              * mais elle porte sur les mots-clés (tags)
              */
             /**
@@ -58,8 +58,8 @@
                 <section>
                     <h3>Présentation</h3>
                     <p>Sur cette page vous trouverez les derniers messages comportant
-                        le mot-clé <?php echo $tag["label"]; ?>
-                        (n° <?php echo $tagId ?>)
+                        le mot-clé <?php echo $tag['label']; ?>
+                        (n° <?php echo $tagId; ?>)
                     </p>
 
                 </section>
@@ -70,18 +70,19 @@
                  * Etape 3: récupérer tous les messages avec un mot clé donné
                  */
                 $laQuestionEnSql = "
-                    SELECT posts.content,posts.created,users.alias AS author_name,  
-                    COUNT(likes.id) AS like_number,  
-                    GROUP_CONCAT(DISTINCT tags.label) AS taglist 
-                    FROM posts_tags AS filter 
+                    SELECT posts.content,posts.created,users.alias AS author_name,
+                    COUNT(likes.id) AS like_number,
+                    GROUP_CONCAT(DISTINCT tags.label) AS taglist,
+                    GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label) AS taglistid
+                    FROM posts_tags AS filter
                     JOIN posts ON posts.id=filter.post_id
                     JOIN users ON users.id=posts.user_id
-                    LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
-                    LEFT JOIN tags       ON posts_tags.tag_id  = tags.id 
-                    LEFT JOIN likes      ON likes.post_id  = posts.id 
-                    WHERE filter.tag_id = '$tagId' 
+                    LEFT JOIN posts_tags ON posts.id = posts_tags.post_id
+                    LEFT JOIN tags       ON posts_tags.tag_id  = tags.id
+                    LEFT JOIN likes      ON likes.post_id  = posts.id
+                    WHERE filter.tag_id = '$tagId'
                     GROUP BY posts.id
-                    ORDER BY posts.created DESC  
+                    ORDER BY posts.created DESC
                     ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 if ( ! $lesInformations)
@@ -96,23 +97,22 @@
                 {
 
                     echo "<pre>" . print_r($post, 1) . "</pre>";
-                    ?>                
+                    echo "<pre>" . print_r(explode(",", '"'.$post['taglistid'].'"')) . "</pre>";
+                    $explode = explode(",", '"'.$post['taglist'].'"');
+                    $explodeid = explode(",", '"'.$post['taglistid'].'"');
+                ?>
                     <article>
                         <h3>
-                            <time datetime='2020-02-01 11:12:13' >31 février 2010 à 11h12</time>
+                            <time><?php echo $post["created"]; ?></time>
                         </h3>
-                        <address>par AreTirer</address>
+                        <address>par <?php echo $post["author_name"]; ?></address>
                         <div>
-                            <p>Ceci est un paragraphe</p>
-                            <p>Ceci est un autre paragraphe</p>
-                            <p>... de toutes manières il faut supprimer cet 
-                                article et le remplacer par des informations en 
-                                provenance de la base de donnée</p>
-                        </div>                                            
+                            <p><?php echo $post["content"]; ?></p>
+                        </div>
                         <footer>
-                            <small>♥ 132</small>
-                            <a href="">#lorem</a>,
-                            <a href="">#piscitur</a>,
+                            <small>♥ <?php echo $post["like_number"]; ?></small>
+                            <a href="tags.php?tags_id=<?php echo $explodeid[0]; ?>"><?php echo $explode[0]; ?></a>,
+                            <a href="tags.php?tags_id=<?php echo $explodeid[1]; ?>"><?php echo $explode[1]; ?></a>
                         </footer>
                     </article>
                 <?php } ?>
