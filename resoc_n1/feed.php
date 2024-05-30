@@ -86,7 +86,6 @@
                     ORDER BY posts.created DESC  
                     ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
-                $post = $lesInformations->fetch_assoc();
                 if ( ! $lesInformations)
                 {
                     echo("Échec de la requete : " . $mysqli->error);
@@ -98,8 +97,8 @@
                  */
                 while ($post = $lesInformations->fetch_assoc())
                 {
-                $explode = explode(",", '"'.$post['taglist'].'"');
-                $explodeid = explode(",", '"'.$post['taglistid'].'"');
+                $explode = explode(",", $post['taglist']);
+                $explodeid = explode(",", $post['taglistid']);
                 ?>
                 <article>
                     <h3>
