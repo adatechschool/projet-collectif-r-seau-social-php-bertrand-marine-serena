@@ -39,10 +39,13 @@
             <main class='contacts'>
                 <?php
                 // Etape 1: récupérer l'id de l'utilisateur
+                //FAIT
                 $userId = intval($_GET['user_id']);
                 // Etape 2: se connecter à la base de donnée
+                //FAIT
                 include("connect.php");
                 // Etape 3: récupérer le nom de l'utilisateur
+                //FAIT
                 $laQuestionEnSql = "
                     SELECT users.*
                     FROM followers
@@ -51,14 +54,17 @@
                     GROUP BY users.id
                     ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
+                while($foll= $lesInformations->fetch_assoc()){
                 // Etape 4: à vous de jouer
                 //@todo: faire la boucle while de parcours des abonnés et mettre les bonnes valeurs ci dessous 
+                //FAIT
                 ?>
                 <article>
                     <img src="user.jpg" alt="blason"/>
-                    <h3>Béatrice</h3>
-                    <p>id:321</p>
+                    <h3><?php echo $foll["alias"]; ?></h3>
+                    <p>id:<?php echo $foll["id"]; ?></p>
                 </article>
+                <?php } ?>
             </main>
         </div>
     </body>
