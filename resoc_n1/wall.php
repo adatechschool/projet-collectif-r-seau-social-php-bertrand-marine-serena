@@ -33,12 +33,14 @@
              * Celui ci est indiqué en parametre GET de la page sous la forme user_id=...
              * Documentation : https://www.php.net/manual/fr/reserved.variables.get.php
              * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
+             * FAIT
              */
             $userId =intval($_GET['user_id']);
             ?>
             <?php
             /**
              * Etape 2: se connecter à la base de donnée
+             * FAIT
              */
             include("connect.php");
             ?>
@@ -47,12 +49,14 @@
                 <?php
                 /**
                  * Etape 3: récupérer le nom de l'utilisateur
+                 * FAIT
                  */                
                 $laQuestionEnSql = "SELECT * FROM users WHERE id= '$userId' ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 $user = $lesInformations->fetch_assoc();
                 //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par l'alias et effacer la ligne ci-dessous
                 //echo "<pre>" . print_r($user, 1) . "</pre>";
+                //FAIT
                 ?>
                 <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
                 <section>
@@ -66,6 +70,7 @@
                 <?php
                 /**
                  * Etape 3: récupérer tous les messages de l'utilisatrice
+                 * FAIT
                  */
                 $laQuestionEnSql = "
                     SELECT posts.content, posts.created, users.alias AS author_name, 
@@ -88,6 +93,7 @@
 
                 /**
                  * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
+                 * FAIT
                  */
                 while ($post = $lesInformations->fetch_assoc())
                 {

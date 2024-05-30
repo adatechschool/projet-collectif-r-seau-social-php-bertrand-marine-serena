@@ -45,16 +45,18 @@
                  * Celui ci est indiqué en parametre GET de la page sous la forme user_id=...
                  * Documentation : https://www.php.net/manual/fr/reserved.variables.get.php
                  * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
+                 * FAIT
                  */
                 $userId = intval($_GET['user_id']);
 
                 /**
                  * Etape 2: se connecter à la base de donnée
+                 * FAIT
                  */
                 include("connect.php");
-
                 /**
                  * Etape 3: récupérer le nom de l'utilisateur
+                 * FAIT
                  */
                 $laQuestionEnSql = "
                     SELECT users.*, 
@@ -80,6 +82,7 @@
                  */
                 //@todo: afficher le résultat de la ligne ci dessous, remplacer les valeurs ci-après puiseffacer la ligne ci-dessous
                 //echo "<pre>" . print_r($user, 1) . "</pre>";
+                //FAIT
                 ?>                
                 <article class='parameters'>
                     <h3>Mes paramètres</h3>

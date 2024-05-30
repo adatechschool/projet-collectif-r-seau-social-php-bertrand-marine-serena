@@ -33,12 +33,14 @@
              */
             /**
              * Etape 1: Le mur concerne un mot-clé en particulier
+             * FAIT
              */
             $tagId = intval($_GET['tag_id']);
             ?>
             <?php
             /**
              * Etape 2: se connecter à la base de donnée
+             * FAIT
              */
             include("connect.php");
             ?>
@@ -47,12 +49,14 @@
                 <?php
                 /**
                  * Etape 3: récupérer le nom du mot-clé
+                 * FAIT
                  */
                 $laQuestionEnSql = "SELECT * FROM tags WHERE id= '$tagId' ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 $tag = $lesInformations->fetch_assoc();
                 //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par le label et effacer la ligne ci-dessous
                 //echo "<pre>" . print_r($tag, 1) . "</pre>";
+                //FAIT
                 ?>
                 <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
                 <section>
@@ -68,6 +72,7 @@
                 <?php
                 /**
                  * Etape 3: récupérer tous les messages avec un mot clé donné
+                 * FAIT
                  */
                 $laQuestionEnSql = "
                     SELECT posts.content,posts.created,users.alias AS author_name,
@@ -92,6 +97,7 @@
 
                 /**
                  * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
+                 * FAIT
                  */
                 while ($post = $lesInformations->fetch_assoc())
                 {
