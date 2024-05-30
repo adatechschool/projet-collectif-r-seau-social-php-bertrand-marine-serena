@@ -73,7 +73,8 @@
                 $laQuestionEnSql = "
                     SELECT posts.content,posts.created,users.alias AS author_name,  
                     COUNT(likes.id) AS like_number,  
-                    GROUP_CONCAT(DISTINCT tags.label) AS taglist 
+                    GROUP_CONCAT(DISTINCT tags.label) AS taglist,
+                    GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label) AS taglistid -- ajout id tag
                     FROM followers 
                     JOIN users ON users.id=followers.followed_user_id
                     JOIN posts ON posts.user_id=users.id
@@ -95,24 +96,31 @@
                  * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
                  * A vous de retrouver comment faire la boucle while de parcours...
                  */
-                ?>                
+                while ($post = $lesInformations->fetch_assoc())
+                {
+                $explode = explode(",", '"'.$post['taglist'].'"');
+                $explodeid = explode(",", '"'.$post['taglistid'].'"');
+                ?>
                 <article>
                     <h3>
-                        <time><?php echo $post['created'] ?></time>
+                        <time><?php echo $post['created']; ?></time>
                     </h3>
-                    <address>par <?php echo $post['author_name'] ?></address>
+                    <address>par <?php echo $post['author_name']; ?></address>
                     <div>
-                        <p><?php echo $post['content'] ?></p>
+                        <p><?php echo $post['content']; ?></p>
                     </div>                                            
                     <footer>
-                        <small>♥ <?php echo $post['like_number'] ?></small>
-                        <a href="tags.php?tag_id=1"><?php echo $post['taglist'] ?></a>,
-                        <a href="">#piscitur</a>,
+                        <small>♥ <?php echo $post['like_number']; ?></small>
+                        <?php if (count($explodeid) > 1):
+                            for ($i = 0; $i < count($explodeid); $i++) { ?>
+                        <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
+                        <?php ;} ?>
+                        <?php else: ?>
+                        <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
+                        <?php endif ?>
                     </footer>
                 </article>
-                <?php
-                // et de pas oublier de fermer ici vote while
-                ?>
+                <?php } ?>
 
 
             </main>
