@@ -9,21 +9,7 @@
     <body>
         <header>
             <img src="resoc.jpg" alt="Logo de notre réseau social"/>
-            <nav id="menu">
-                <a href="news.php">Actualités</a>
-                <a href="wall.php?user_id=5">Mur</a>
-                <a href="feed.php?user_id=5">Flux</a>
-                <a href="tags.php?tag_id=1">Mots-clés</a>
-            </nav>
-            <nav id="user">
-                <a href="#">Profil</a>
-                <ul>
-                    <li><a href="settings.php?user_id=5">Paramètres</a></li>
-                    <li><a href="followers.php?user_id=5">Mes suiveurs</a></li>
-                    <li><a href="subscriptions.php?user_id=5">Mes abonnements</a></li>
-                </ul>
-
-            </nav>
+            <?php include("menu.php"); ?>
         </header>
         <div id="wrapper">
             <?php
@@ -75,7 +61,7 @@
                  * FAIT
                  */
                 $laQuestionEnSql = "
-                    SELECT posts.content,posts.created,users.alias AS author_name,
+                    SELECT posts.content,posts.created,users.alias AS author_name, users.id AS UserID,
                     COUNT(likes.id) AS like_number,
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist,
                     GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label) AS taglistid
@@ -110,7 +96,7 @@
                         <h3>
                             <time><?php echo $post["created"]; ?></time>
                         </h3>
-                        <address>par <?php echo $post["author_name"]; ?></address>
+                        <address>par <a href="wall.php?user_id=<?php echo $post["UserID"]; ?>"><?php echo $post["author_name"]; ?></a></address>
                         <div>
                             <p><?php echo $post["content"]; ?></p>
                         </div>
