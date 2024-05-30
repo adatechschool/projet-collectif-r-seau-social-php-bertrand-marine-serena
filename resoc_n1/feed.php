@@ -96,11 +96,11 @@
                  * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
                  * A vous de retrouver comment faire la boucle while de parcours...
                  */
-                $explode = explode(",", '"'.$post['taglist'].'"');
-                $explodeid = explode(",", '"'.$post['taglistid'].'"');
                 while ($post = $lesInformations->fetch_assoc())
                 {
-                ?>                
+                $explode = explode(",", '"'.$post['taglist'].'"');
+                $explodeid = explode(",", '"'.$post['taglistid'].'"');
+                ?>
                 <article>
                     <h3>
                         <time><?php echo $post['created']; ?></time>
