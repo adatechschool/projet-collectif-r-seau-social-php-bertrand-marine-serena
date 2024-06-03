@@ -95,14 +95,17 @@
                         </div>
                         <footer>
                             <small>♥ <?php echo $post['like_number'] ?></small>
-                            <?php if (count($explodeid) > 1):
-                            for ($i = 0; $i < count($explodeid); $i++) { ?>
-                        <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
-                        <?php ;} ?>
-                        <?php else: ?>
-                        <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
-                        <?php endif ?>
-                            
+                            <?php if (!empty($post['taglist']) && !empty($post['taglistid'])) { ?>
+                                <?php if (count($explodeid) > 1):
+                                    for ($i = 0; $i < count($explodeid); $i++) { ?>
+                                        <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
+                                    <?php ;} ?>
+                                <?php else: ?>
+                                    <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
+                                <?php endif ?>
+                            <?php } else { ?>
+                                <p></p>
+                            <?php } ?>
                         </footer>
                     </article>
                     <?php

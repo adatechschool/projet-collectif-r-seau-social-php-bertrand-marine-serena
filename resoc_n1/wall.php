@@ -61,6 +61,14 @@
                     {
                         $listAuteurs[$user['id']] = $user['alias'];
                     }
+
+                    $listTags = [];
+                    $laQuestionEnSql2 = "SELECT * FROM tags";
+                    $lesInformations2 = $mysqli->query($laQuestionEnSql2);
+                    while ($tags = $lesInformations2->fetch_assoc())
+                    {
+                        $listTags[$tags['id']] = $tags['label'];
+                    }
                     /**
                      * TRAITEMENT DU FORMULAIRE
                      */
@@ -81,6 +89,10 @@
                         // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                         $authorId = intval($mysqli->real_escape_string($authorId));
                         $postContent = $mysqli->real_escape_string($postContent);
+                        $tagsId = intval($mysqli->real_escape_string($_POST['tag']));
+
+                        $postContent .= "#$listTags[$tagsId]";
+
                         //Etape 4 : construction de la requete
                         $lInstructionSql = "INSERT INTO posts "
                                 . "(id, user_id, content, created) "
@@ -101,7 +113,7 @@
                         }
                     }
                     ?>                     
-                    <form action="usurpedpost.php" method="post">
+                    <form action="" method="post">
                         <input type='hidden' name='???' value='achanger'>
                         <dl>
                             <dt><label for='auteur'>Auteur</label></dt>
@@ -113,9 +125,18 @@
                                 </select></dd>
                             <dt><label for='message'>Message</label></dt>
                             <dd><textarea name='message'></textarea></dd>
+                            <dt><label for='tag'>Mot(s) clé(s)</label></dt>
+                            <dd><select name='tag' id='tag'>
+                                <option value="">--Sélectionne ton mot clé--</option>
+                                
+                                    <?php foreach ($listTags as $id => $label)
+                                        echo "<option value='$id'>#$label</option>";
+                                    ?>
+                            </select></dd>
+
                         </dl>
                         <input type='submit'>
-                    </form>               
+                    </form>         
                 </article>
                 </section>
             </aside>
@@ -165,14 +186,17 @@
                         </div>                                            
                         <footer>
                             <small>♥ <?php echo $post['like_number']; ?></small>
-                            <?php if (count($explodeid) > 1):
-                            for ($i = 0; $i < count($explodeid); $i++) { ?>
-                        <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
-                        <?php ;} ?>
-                        <?php else: ?>
-                        <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
-                        <?php endif ?>
-                            
+                            <?php if (!empty($post['taglist']) && !empty($post['taglistid'])) { ?>
+                                <?php if (count($explodeid) > 1):
+                                    for ($i = 0; $i < count($explodeid); $i++) { ?>
+                                    <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
+                                <?php ;} ?>
+                                <?php else: ?>
+                                    <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
+                                <?php endif ?>
+                            <?php } else { ?>
+                                <p></p>
+                            <?php } ?>
                         </footer>
                     </article>
                 <?php } ?>
