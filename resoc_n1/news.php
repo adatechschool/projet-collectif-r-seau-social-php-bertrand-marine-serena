@@ -45,7 +45,8 @@
                 $laQuestionEnSql = "
                     SELECT posts.content,posts.created,users.alias AS author_name, users.id AS UserID,  
                     COUNT(likes.id) AS like_number,  
-                    GROUP_CONCAT(DISTINCT tags.label) AS taglist 
+                    GROUP_CONCAT(DISTINCT tags.label) AS taglist,
+                    GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label) AS taglistid -- ajout id tag
                     FROM posts
                     JOIN users ON users.id=posts.user_id
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
@@ -81,6 +82,8 @@
                     // 
                     // avec le ? > ci-dessous on sort du mode php et on écrit du html comme on veut... mais en restant dans la boucle
                     //FAIT
+                    $explode = explode(",", $post['taglist']);
+                    $explodeid = explode(",", $post['taglistid']);
                     ?>
                     <article>
                         <h3>
@@ -92,7 +95,14 @@
                         </div>
                         <footer>
                             <small>♥ <?php echo $post['like_number'] ?></small>
-                            <a href="">#<?php echo $post['taglist'] ?></a>,
+                            <?php if (count($explodeid) > 1):
+                            for ($i = 0; $i < count($explodeid); $i++) { ?>
+                        <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
+                        <?php ;} ?>
+                        <?php else: ?>
+                        <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
+                        <?php endif ?>
+                            
                         </footer>
                     </article>
                     <?php
