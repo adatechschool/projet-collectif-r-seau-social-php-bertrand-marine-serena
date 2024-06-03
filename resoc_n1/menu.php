@@ -1,13 +1,30 @@
 <?php session_start();
-//var_dump($_SESSION); 
 ?>
 <nav id="menu">
     <a href="news.php">Actualités</a>
-    <a href="wall.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mur</a>
-    <a href="feed.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Flux</a>
-    <a href="tags.php?tag_id=1">Mots-clés</a>
+
+    <?php if (isset($_SESSION['connected_id']) && $_SESSION['connected_id'] !== null) : ?>
+        <a href="wall.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mur</a>
+    <?php else: ?>
+        <a href="#" onclick="alert('Veuillez vous connecter pour avoir accès au mur');">Mur</a>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['connected_id']) && $_SESSION['connected_id'] !== null) : ?>
+        <a href="feed.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Flux</a>
+    <?php else: ?>
+        <a href="#" onclick="alert('Veuillez vous connecter pour avoir accès au flux');">Flux</a>
+    <?php endif; ?>
+    
+    <a href="tags.php?tag_id=1">Tags</a>
 </nav>
-<a href="news.php">Deconnexion</a>
+<nav id="user">
+    <?php if( isset($_SESSION['connected_id']) && $_SESSION['connected_id'] !== null ) : ?>
+            <a href="./logout.php">Déconnexion</a>
+        <?php else: ?>
+                <a href="./login.php">Connexion</a>
+        <?php endif; ?> 
+</nav>
+<?php if (isset($_SESSION['connected_id']) && $_SESSION['connected_id'] !== null) : ?>
 <nav id="user">
     <a href="#">Profil</a>
         <ul>
@@ -16,3 +33,4 @@
             <li><a href="subscriptions.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mes abonnements</a></li>
         </ul>
 </nav>
+<?php endif; ?>

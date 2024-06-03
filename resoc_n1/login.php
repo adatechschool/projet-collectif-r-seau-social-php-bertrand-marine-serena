@@ -65,8 +65,10 @@
                             echo "Votre connexion est un succès : " . $user['alias'] . ".";
                             // Etape 7 : Se souvenir que l'utilisateur s'est connecté pour la suite
                             // documentation: https://www.php.net/manual/fr/session.examples.basic.php
-                            session_start();
                             $_SESSION['connected_id']=$user['id'];
+                            //Script de redirection
+                            header('Location: ./news.php');
+                            exit();
                         }
                     }
                     ?>                     
