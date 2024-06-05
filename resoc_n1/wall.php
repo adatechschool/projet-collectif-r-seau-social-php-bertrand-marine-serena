@@ -84,6 +84,7 @@
                         $authorId = $_POST['auteur'];
                         $postContent = $_POST['message'];
                         $tagsLabel = $_POST['tag'];
+                        $tagsLabel = $_POST['taginput'];
 
                         //Etape 3 : Petite sécurité
                         // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
@@ -99,51 +100,46 @@
                                 . "'" . $postContent . "', "
                                 . "NOW())"
                                 ;
+
                             //construction requete envoi tags
                         $lInstructionSql2 = "INSERT INTO tags "
                                 . "(id, label)"
                                 ."VALUES (NULL, " 
                                 . "'" . $tagsLabel . "')"
                                 ;
-                        
 
-                        //echo $lInstructionSql;
                         // Etape 5 : execution
                         $ok = $mysqli->query($lInstructionSql);
-                        if ( ! $ok)
-                        {
-                            echo "Impossible d'ajouter le message : " . $mysqli->error;
-                        } else
-                        {
-                            echo "Message posté en tant que : " . $listAuteurs[$authorId];
+                        if (!isset($ok)) {
+                            echo "Impossible d'ajouter le message : " . $mysqli->error . "<br>";
+                        } else {
+                            echo "Message posté en tant que : " . $listAuteurs[$authorId] . "<br>";
                         }
                         //recup id dernier post
                         $lastMessageId = $mysqli->insert_id;
-                        echo $lastMessageId;
-                        echo "je viens de t'afficher l'id normalement";
+                        echo "L'id du message est : " . $lastMessageId . "<br>";
                         //-------------------------------
-                        $tagsOk = $mysqli->query($lInstructionSql2);
-                        if ( ! $tagsOk)
-                        {
-                            echo "Impossible d'ajouter le tag : " . $mysqli->error;
-                        } else
-                        {
-                            echo "Tag posté : " . $listTags[$tagsLabel];
-                        }
+                        
                         //recup id dernier tag
-                        if ($post['taglistid'] == $mysqli->insert_id) {
-                        $lastTagId = $post['taglistid'];
+                        if (isset($_POST['tag']) && !empty($_POST['tag'])) {
+                            $lastTagId = $_POST['tag'];
+                            echo "Le tag lié est : " . $lastTagId . "<br>";
                         } else {
-                        $lastTagId = $mysqli->insert_id;
+                            $lastTagId = $_POST['taginput'];
+                            $tagsOk = $mysqli->query($lInstructionSql2);
+                            if (isset($tagsOk)) {
+                            echo "Impossible d'ajouter le tag : " . $mysqli->error . "<br>";
+                            } else {
+                            echo "Tag posté : " . $listTags[$tagsLabel] . "<br>";
+                            }
+                            echo "L'id du dernier tag est : " . $lastTagId . "<br>";
+                            $lastTagId = intval($mysqli->insert_id);
                         }
-                        echo $lastTagId;
-                        echo "id du dernier tag";
                         //construction liaison post_tags entre les posts et les tags
                         $linkTableTags = "INSERT INTO posts_tags"
                         . "(id, post_id, tag_id)"
                         . "VALUES (NULL, " . $lastMessageId . "," . $lastTagId . ")"
                         ;
-
                         //------------------------------
                         $linkOk = $mysqli->query($linkTableTags);
                         if ( ! $linkOk)
@@ -176,8 +172,8 @@
                                         echo "<option value='$id'>#$label</option>";
                                     ?>
                                 </select></dd>
-                                <dt><label for='tag'>Ajouter votre tag</label></dt>
-                                <dd><input type='text' name='tag' id='tag'></dd>
+                                <dt><label for='taginput'>Ajouter votre tag</label></dt>
+                                <dd><input type='text' name='taginput' id='taginput'></dd>
                         </dl>
                         <input type='submit'>
                     </form>         
@@ -244,7 +240,7 @@
                             <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
                             <?php } ?>
                             <?php } else { ?>
-                                <a href="#">More Tags [...]</a>
+                                <a href="tags.php?tag_id=<?php echo $MoreTagId; ?>"><em>More Tags [...]</em></a>
                             <?php } ?>
                         </footer>
                     </article>

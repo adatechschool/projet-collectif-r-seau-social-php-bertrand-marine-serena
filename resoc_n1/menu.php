@@ -1,4 +1,15 @@
 <?php session_start();
+include("./connect.php");
+$SqlRequest = "
+SELECT tag_id, COUNT(*) as occurrence_count
+FROM posts_tags
+GROUP BY tag_id
+ORDER BY occurrence_count DESC
+LIMIT 1
+";
+$Infos = $mysqli->query($SqlRequest);
+$TagsId = $Infos->fetch_assoc();
+$MoreTagId = $TagsId['tag_id'];
 ?>
 <nav id="menu">
     <a href="news.php">Actualités</a>
@@ -15,7 +26,7 @@
         <a href="#" onclick="alert('Veuillez vous connecter pour avoir accès au flux');">Flux</a>
     <?php endif; ?>
     
-    <a href="tags.php?tag_id=1">Tags</a>
+    <a href="tags.php?tag_id=<?php echo $MoreTagId; ?>">Tags</a>
 </nav>
 <nav id="user">
     <?php if( isset($_SESSION['connected_id']) && $_SESSION['connected_id'] !== null ) : ?>

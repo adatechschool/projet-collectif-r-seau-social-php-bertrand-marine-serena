@@ -1,5 +1,5 @@
 body{
-    background-color: #003;
+    background-color: #333;
     font-family: Arial;
 }
 
@@ -7,7 +7,7 @@ a{text-decoration: none; color:black;}
 a:hover{text-decoration: underline;}
 
 body>header{
-    background-color: #fff;
+    background-color: #05113d;
     display:flex;
     width:80em;
     margin:0 auto 2em auto;    

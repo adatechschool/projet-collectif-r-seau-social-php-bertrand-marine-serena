@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>ReSoC - Actualités</title> 
         <meta name="author" content="Julien Falconnet">
-        <link rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="./style.css"/>
     </head>
     <body>
         <header>
@@ -108,7 +108,7 @@
                                     <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
                                     <?php } ?>
                                     <?php } else { ?> 
-                                        <a href="#">More Tags [...]</a>
+                                        <a href="tags.php?tag_id=<?php echo $MoreTagId; ?>"><em>More Tags [...]</em></a>
                                     <?php } ?>
                         </footer>
                     </article>

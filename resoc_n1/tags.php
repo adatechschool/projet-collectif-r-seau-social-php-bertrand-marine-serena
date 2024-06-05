@@ -47,11 +47,41 @@
                 <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
                 <section>
                     <h3>Présentation</h3>
-                    <p>Sur cette page vous trouverez les derniers messages comportant
-                        le mot-clé <?php echo $tag['label']; ?>
+                    <p>Vous êtes sur la page des Tags. Actuellement sont affichés les derniers messages comportant
+                        le tag <strong>#<?php echo $tag['label']; ?></strong>
                         (n°<?php echo $tag['id']?>)
                     </p>
-
+                    <?php
+                        $enCoursDeTraitement = isset($_POST['searchtags']);
+                        
+                        if ($enCoursDeTraitement) {
+                        $searchTag = $_POST['searchtags'];
+                        $searchTag = $mysqli->real_escape_string($searchTag);
+                    }
+                    ?>
+                    <form action="redirectags.php" method="post">
+                        <label for="searchtags">Tags Search : </label>
+                        <select name="searchtags" id="searchtags"/>
+                                <option value="">--Sélectionner un tag</option>
+                                    <?php
+                                        //requete rapide
+                                        $listTags = [];
+                                        $laQuestionEnSql2 = "SELECT * FROM tags";
+                                        $lesInformations2 = $mysqli->query($laQuestionEnSql2);
+                                        //boucle recup tags dans bdd
+                                        while ($tag = $lesInformations2->fetch_assoc())
+                                        {
+                                            $listTags[$tag['id']] = $tag['label'];
+                                        }  
+                                        //gen menu deroulant tags
+                                        foreach ($listTags as $id => $label)
+                                        echo "<option value='$id'>#$label</option>";
+                                    ?> 
+                        </select>
+                        <input type="submit" value="Search"/>
+                        <?php 
+                        ?>
+                    </form>
                 </section>
             </aside>
             <main>
@@ -102,18 +132,16 @@
                         </div>
                         <footer>
                             <small>♥ <?php echo $post["like_number"]; ?></small>
-                            <?php if (count($explodeid) > 1): 
+                            <?php if (count($explodeid) > 0): 
                                 for ($i = 0; $i < count($explodeid); $i++) { ?>
                                 <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
                                 <?php ;} ?>
                             <?php else: ?>
-                                <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
+                                <a href="#">More Tags [...]</a>
                             <?php endif ?>
                         </footer>
                     </article>
                 <?php } ?>
-
-
             </main>
         </div>
     </body>
