@@ -123,16 +123,16 @@
                         //recup id dernier tag
                         if (isset($_POST['tag']) && !empty($_POST['tag'])) {
                             $lastTagId = $_POST['tag'];
-                            echo "Le tag lié est : " . $lastTagId . "<br>";
+                            //echo "Le tag lié est : " . $lastTagId . "<br>";
                         } else {
                             $lastTagId = $_POST['taginput'];
                             $tagsOk = $mysqli->query($lInstructionSql2);
-                            if (isset($tagsOk)) {
+                            if (isset($tagsOk) && !empty($lastTagId)) {
                             echo "Impossible d'ajouter le tag : " . $mysqli->error . "<br>";
                             } else {
                             echo "Tag posté : " . $listTags[$tagsLabel] . "<br>";
                             }
-                            echo "L'id du dernier tag est : " . $lastTagId . "<br>";
+                            //echo "L'id du dernier tag est : " . $lastTagId . "<br>";
                             $lastTagId = intval($mysqli->insert_id);
                         }
                         //construction liaison post_tags entre les posts et les tags
