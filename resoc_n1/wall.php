@@ -64,10 +64,10 @@
                     $listTags = [];
                     $laQuestionEnSql2 = "SELECT * FROM tags";
                     $lesInformations2 = $mysqli->query($laQuestionEnSql2);
-                    while ($tags = $lesInformations2->fetch_assoc())
+                    while ($tag = $lesInformations2->fetch_assoc())
                     {
-                        $listTags[$tags['id']] = $tags['label'];
-                    }
+                        $listTags[$tag['id']] = $tag['label'];
+                    }   
                     /**
                      * TRAITEMENT DU FORMULAIRE
                      */
@@ -149,6 +149,15 @@
                         {
                             echo "Posté à post_tags : " . $lastMessageId . "," . $lastTagId;
                         }
+
+                        $tagsOk = $mysqli->query($lInstructionSql2);
+                        if ( ! $tagsOk)
+                        {
+                            echo "Impossible d'ajouter le mot-clé : " . $mysqli->error;
+                        } else
+                        {
+                            echo "Mot-clé posté : " . $listTags[$tagsLabel];
+                        }
                     }
 
                     ?>                     
@@ -212,16 +221,16 @@
                 while ($post = $lesInformations->fetch_assoc())
                 {
                     if (!empty($post['taglist'])) {
-                    $explode = explode(",", $post['taglist']);
+                    $explode = explode(",", $post['taglist']);          
                     } else {
                         $explode = [];
                     };
-                    
+
                     if (!empty($post['taglistid'])) {
-                    $explodeid = explode(",", $post['taglistid']);
+                        $explodeid = explode(",", $post['taglistid']);
                     } else {
                         $explodeid = [];
-                    }
+                    };
 
                     //echo "<pre>" . print_r($post, 1) . "</pre>";
                     ?>                
