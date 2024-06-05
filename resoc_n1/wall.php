@@ -84,14 +84,13 @@
                         // et complétez le code ci dessous en remplaçant les ??? OK
                         $authorId = $_POST['auteur'];
                         $postContent = $_POST['message'];
+                        $tagsLabel = $_POST['tag'];
 
                         //Etape 3 : Petite sécurité
                         // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                         $authorId = intval($mysqli->real_escape_string($authorId));
                         $postContent = $mysqli->real_escape_string($postContent);
-                        $tagsId = intval($mysqli->real_escape_string($_POST['tag']));
-
-                        $postContent .= "#$listTags[$tagsId]";
+                        $tagsLabel = $mysqli->real_escape_string($tagsLabel);
 
                         //Etape 4 : construction de la requete
                         $lInstructionSql = "INSERT INTO posts "
@@ -101,7 +100,13 @@
                                 . "'" . $postContent . "', "
                                 . "NOW())"
                                 ;
-                        //echo $lInstructionSql;
+
+                        $lInstructionSql2 = "INSERT INTO tags "
+                                            . "(label)"
+                                            . "VALUES (" . "'".$tagsLabel. "'" .")"
+                                            ;
+
+                        echo $lInstructionSql2;
                         // Etape 5 : execution
                         $ok = $mysqli->query($lInstructionSql);
                         if ( ! $ok)
@@ -110,6 +115,15 @@
                         } else
                         {
                             echo "Message posté en tant que : " . $listAuteurs[$authorId];
+                        }
+
+                        $tagsOk = $mysqli->query($lInstructionSql2);
+                        if ( ! $tagsOk)
+                        {
+                            echo "Impossible d'ajouter le mot-clé : " . $mysqli->error;
+                        } else
+                        {
+                            echo "Mot-clé posté : " . $listTags[$tagsLabel];
                         }
                     }
                     ?>                     
@@ -128,11 +142,12 @@
                             <dt><label for='tag'>Mot(s) clé(s)</label></dt>
                             <dd><select name='tag' id='tag'>
                                 <option value="">--Sélectionne ton mot clé--</option>
-                                
                                     <?php foreach ($listTags as $id => $label)
                                         echo "<option value='$id'>#$label</option>";
                                     ?>
                             </select></dd>
+                            <dt><label for='tag'>Ajout mot-clé</label></dt>
+                            <dd><input type="text" name="tag"></dd>
 
                         </dl>
                         <input type='submit'>
@@ -171,8 +186,17 @@
                  */
                 while ($post = $lesInformations->fetch_assoc())
                 {
-                    $explode = explode(",", $post['taglist']);
-                    $explodeid = explode(",", $post['taglistid']);
+                    if (!empty($post['taglist'])) {
+                    $explode = explode(",", $post['taglist']);          
+                    } else {
+                        $explode = [];
+                    };
+
+                    if (!empty($post['taglistid'])) {
+                        $explodeid = explode(",", $post['taglistid']);
+                    } else {
+                        $explodeid = [];
+                    };
 
                     //echo "<pre>" . print_r($post, 1) . "</pre>";
                     ?>                
@@ -186,22 +210,17 @@
                         </div>                                            
                         <footer>
                             <small>♥ <?php echo $post['like_number']; ?></small>
-                            <?php if (!empty($post['taglist']) && !empty($post['taglistid'])) { ?>
-                                <?php if (count($explodeid) > 1):
+                                
+                                    <?php 
+                                    
+                                    
                                     for ($i = 0; $i < count($explodeid); $i++) { ?>
                                     <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
-                                <?php ;} ?>
-                                <?php else: ?>
-                                    <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
-                                <?php endif ?>
-                            <?php } else { ?>
-                                <p></p>
-                            <?php } ?>
+                                     
+                                <?php } ?>
                         </footer>
                     </article>
                 <?php } ?>
-
-
             </main>
         </div>
     </body>
