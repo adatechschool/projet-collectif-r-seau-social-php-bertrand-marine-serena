@@ -99,13 +99,15 @@
                                 . "'" . $postContent . "', "
                                 . "NOW())"
                                 ;
-
+                            //construction requete envoi tags
                         $lInstructionSql2 = "INSERT INTO tags "
-                                            . "(label)"
-                                            . "VALUES (" . "'".$tagsLabel. "'" .")"
-                                            ;
+                                . "(id, label)"
+                                ."VALUES (NULL, " 
+                                . "'" . $tagsLabel . "')"
+                                ;
+                        
 
-                        echo $lInstructionSql2;
+                        //echo $lInstructionSql;
                         // Etape 5 : execution
                         $ok = $mysqli->query($lInstructionSql);
                         if ( ! $ok)
@@ -115,16 +117,44 @@
                         {
                             echo "Message posté en tant que : " . $listAuteurs[$authorId];
                         }
-
+                        //recup id dernier post
+                        $lastMessageId = $mysqli->insert_id;
+                        echo $lastMessageId;
+                        echo "je viens de t'afficher l'id normalement";
+                        //-------------------------------
                         $tagsOk = $mysqli->query($lInstructionSql2);
                         if ( ! $tagsOk)
                         {
-                            echo "Impossible d'ajouter le mot-clé : " . $mysqli->error;
+                            echo "Impossible d'ajouter le tag : " . $mysqli->error;
                         } else
                         {
-                            echo "Mot-clé posté : " . $listTags[$tagsLabel];
+                            echo "Tag posté : " . $listTags[$tagsLabel];
+                        }
+                        //recup id dernier tag
+                        if ($post['taglistid'] == $mysqli->insert_id) {
+                        $lastTagId = $post['taglistid'];
+                        } else {
+                        $lastTagId = $mysqli->insert_id;
+                        }
+                        echo $lastTagId;
+                        echo "id du dernier tag";
+                        //construction liaison post_tags entre les posts et les tags
+                        $linkTableTags = "INSERT INTO posts_tags"
+                        . "(id, post_id, tag_id)"
+                        . "VALUES (NULL, " . $lastMessageId . "," . $lastTagId . ")"
+                        ;
+
+                        //------------------------------
+                        $linkOk = $mysqli->query($linkTableTags);
+                        if ( ! $linkOk)
+                        {
+                            echo "Impossible d'envoyer à post_tags: " . $mysqli->error;
+                        } else
+                        {
+                            echo "Posté à post_tags : " . $lastMessageId . "," . $lastTagId;
                         }
                     }
+
                     ?>                     
                     <form action="" method="post">
                         <input type='hidden' name='???' value='achanger'>
@@ -138,16 +168,16 @@
                                 </select></dd>
                             <dt><label for='message'>Message</label></dt>
                             <dd><textarea name='message'></textarea></dd>
-                            <dt><label for='tag'>Mot(s) clé(s)</label></dt>
+                            <dt><label for='tag'>Tag</label></dt>
                             <dd><select name='tag' id='tag'>
-                                <option value="">--Sélectionne ton mot clé--</option>
-                                    <?php foreach ($listTags as $id => $label)
+                                <option value="">--Sélectionner un tag</option>
+                                    <?php
+                                        foreach ($listTags as $id => $label)
                                         echo "<option value='$id'>#$label</option>";
                                     ?>
-                            </select></dd>
-                            <dt><label for='tag'>Ajout mot-clé</label></dt>
-                            <dd><input type="text" name="tag"></dd>
-
+                                </select></dd>
+                                <dt><label for='tag'>Ajouter votre tag</label></dt>
+                                <dd><input type='text' name='tag' id='tag'></dd>
                         </dl>
                         <input type='submit'>
                     </form>         
@@ -186,16 +216,16 @@
                 while ($post = $lesInformations->fetch_assoc())
                 {
                     if (!empty($post['taglist'])) {
-                    $explode = explode(",", $post['taglist']);          
+                    $explode = explode(",", $post['taglist']);
                     } else {
                         $explode = [];
                     };
-
+                    
                     if (!empty($post['taglistid'])) {
-                        $explodeid = explode(",", $post['taglistid']);
+                    $explodeid = explode(",", $post['taglistid']);
                     } else {
                         $explodeid = [];
-                    };
+                    }
 
                     //echo "<pre>" . print_r($post, 1) . "</pre>";
                     ?>                
@@ -209,14 +239,13 @@
                         </div>                                            
                         <footer>
                             <small>♥ <?php echo $post['like_number']; ?></small>
-                                
-                                    <?php 
-                                    
-                                    
-                                    for ($i = 0; $i < count($explodeid); $i++) { ?>
-                                    <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
-                                     
-                                <?php } ?>
+                            <?php if (count($explodeid) > 0) {
+                            for ($i = 0; $i < count($explodeid); $i++) { ?>
+                            <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
+                            <?php } ?>
+                            <?php } else { ?>
+                                <a href="#">More Tags [...]</a>
+                            <?php } ?>
                         </footer>
                     </article>
                 <?php } ?>

@@ -82,8 +82,16 @@
                     // 
                     // avec le ? > ci-dessous on sort du mode php et on écrit du html comme on veut... mais en restant dans la boucle
                     //FAIT
+                    if (!empty($post['taglist'])) {
                     $explode = explode(",", $post['taglist']);
+                    }else{
+                        $explode = [];
+                    };
+                    if (!empty($post['taglistid'])) {
                     $explodeid = explode(",", $post['taglistid']);
+                    } else {
+                        $explodeid = [];
+                    }
                     ?>
                     <article>
                         <h3>
@@ -95,17 +103,13 @@
                         </div>
                         <footer>
                             <small>♥ <?php echo $post['like_number'] ?></small>
-                            <?php if (!empty($post['taglist']) && !empty($post['taglistid'])) { ?>
-                                <?php if (count($explodeid) > 1):
+                                    <?php if (count($explodeid) > 0) {
                                     for ($i = 0; $i < count($explodeid); $i++) { ?>
-                                        <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
-                                    <?php ;} ?>
-                                <?php else: ?>
-                                    <a href="tags.php?tag_id=<?php echo $explodeid[0]; ?>">#<?php echo $explode[0]; ?></a>
-                                <?php endif ?>
-                            <?php } else { ?>
-                                <p></p>
-                            <?php } ?>
+                                    <a href="tags.php?tag_id=<?php echo $explodeid[$i]; ?>">#<?php echo $explode[$i]; ?></a>
+                                    <?php } ?>
+                                    <?php } else { ?> 
+                                        <a href="#">More Tags [...]</a>
+                                    <?php } ?>
                         </footer>
                     </article>
                     <?php
