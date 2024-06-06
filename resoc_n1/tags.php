@@ -61,7 +61,7 @@
                     ?>
                     <form action="redirectags.php" method="post">
                         <label for="searchtags">Tags Search : </label>
-                        <select name="searchtags" id="searchtags"/>
+                        <select name="searchtags" id="searchtags">
                                 <option value="">--Sélectionner un tag</option>
                                     <?php
                                         //requete rapide
