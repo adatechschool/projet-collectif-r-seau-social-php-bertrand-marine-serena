@@ -8,7 +8,7 @@
     </head>
     <body>
         <header>
-            <img src="resoc.jpg" alt="Logo de notre réseau social"/>
+            <img src="./logo_dis_serena.png" alt="Logo de notre réseau social"/>
             <?php include("menu.php"); ?>
         </header>
         <div id="wrapper">
@@ -43,8 +43,8 @@
                 //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par le label et effacer la ligne ci-dessous
                 //echo "<pre>" . print_r($tag, 1) . "</pre>";
                 //FAIT
+                include("userimg.php");
                 ?>
-                <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
                 <section>
                     <h3>Présentation</h3>
                     <p>Vous êtes sur la page des Tags. Actuellement sont affichés les derniers messages comportant

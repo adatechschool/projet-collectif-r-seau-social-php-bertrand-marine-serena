@@ -8,7 +8,7 @@
     </head>
     <body>
         <header>
-            <img src="resoc.jpg" alt="Logo de notre réseau social"/>
+            <img src="./logo_dis_serena.png" alt="Logo de notre réseau social"/>
             <?php include("menu.php"); ?>
         </header>
 
@@ -16,7 +16,7 @@
 
             <aside>
                 <h2>Présentation</h2>
-                <p>Bienvenu sur notre réseau social.</p>
+                <p>Bienvenue • Welcome • sur l'Expérience d'IA Social DIS SERENA ...</p>
             </aside>
             <main>
                 <article>

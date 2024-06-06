@@ -30,7 +30,7 @@
 
             <aside>
                 <h2>Présentation</h2>
-                <p>Bienvenu sur notre réseau social.</p>
+                <p>Bienvenue • Welcome • Dit Serena ...</p>
             </aside>
             <main>
                 <article>

@@ -36,12 +36,13 @@ $MoreTagId = $TagsId['tag_id'];
         <?php endif; ?> 
 </nav>
 <?php if (isset($_SESSION['connected_id']) && $_SESSION['connected_id'] !== null) : ?>
-<nav id="user">
-    <a href="#"><?php echo $_SESSION['connected_alias']; ?></a>
-        <ul>
-            <li><a href="settings.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Paramètres</a></li>
-            <li><a href="followers.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mes suiveurs</a></li>
-            <li><a href="subscriptions.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mes abonnements</a></li>
+    <nav id="user">
+        <img src="./user01.png" alt="profil icon" />
+        <a href="#"><?php echo $_SESSION['connected_alias']; ?></a>
+    <ul>
+            <li><a href="settings.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mes Paramètres</a></li>
+            <li><a href="followers.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mes Followers</a></li>
+            <li><a href="subscriptions.php?user_id=<?php echo $_SESSION['connected_id']; ?>">Mes Abonnements</a></li>
         </ul>
 </nav>
 <?php endif; ?>

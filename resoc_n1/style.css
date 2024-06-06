@@ -1,17 +1,26 @@
-body{
-    background-color: #333;
-    font-family: Arial;
+@font-face {
+    font-family: "Roboto-Medium";
+    src: url("./Roboto-Medium.ttf");
 }
 
-a{text-decoration: none; color:black;}
+body{
+    background-image: url(./fond_hexa.png);
+    background-repeat: repeat;
+    font-family: "Roboto-Medium";
+    background-color: rgba(13, 28, 88, 0.8);
+}
+
+a{text-decoration: none; color: #fff;}
 a:hover{text-decoration: underline;}
 
 body>header{
-    background-color: #e3e3e3;
+    background-color: #333;
     display:flex;
     width:80em;
     margin:0 auto 2em auto;    
     padding:0;
+    border-radius: 1em;
+    border: 2px solid #0d1c58;
 
 }
 body>header img{
@@ -21,25 +30,42 @@ body>header #menu {
     display:flex;
     width:50%;
     align-items: stretch;
-    border-left: 1px solid #99b;
+    border-left: 1px ridge #666;
+}
+body>header #menu p{
+    text-align: center;
 }
 body>header #menu a{
     flex:1;
     text-align: center;
     padding-top:2em;
-    border-right: 1px solid #99b;
+    border-right: 2px groove #666;
+    transition: 0.4s;
+
 }
-body>header a:hover
-{
-    background-color: #99b;
+body>header nav img{
+    position: absolute;
+    height: 2em;
+    margin-left: 2.5em;
 }
-body>header ul{list-style: none;}
-body>header #user
-{
+
+body>header a:hover{
+    background-color: #0d1c58;
+    text-decoration: none;
+    color: #999;
+    transition: ease-in 0.3s;
+}
+
+body>header ul{
+    list-style: none;
+}
+
+body>header #user{
     margin-left: auto;
     flex:0.2;
     border-left: 1px solid #99b;
 }
+
 body>header #user>a{
     display:block;
     text-align: center;
@@ -52,7 +78,7 @@ body>header #user ul{
     padding:0;
     margin:0;
     margin-left:-5em;
-    background-color: #fff;
+    background-color: #aaa3e5;
     border: 1px solid #99b;
 
     z-index: 1;
@@ -67,22 +93,28 @@ body>header #user:hover ul{
     display:block;
 }
 
-
 #wrapper{
     display:flex;    
     width:80em;
     margin:0 auto 2em auto;
+    color: #fff;
 }
 #wrapper aside{
-    background-color: #fff;
+    background-color: #333;
     flex:1;
     padding:1em;
-    border-radius: 1em;    
+    border-radius: 0.5em;
+    border: 1px solid #0d1c58;    
 }
 #wrapper aside img{
     display: block;
     width:50%;
     margin:auto;
+}
+
+#wrapper aside p{
+    text-align: center;
+    line-height: 1.5em;
 }
 
 #wrapper main{
@@ -92,10 +124,11 @@ body>header #user:hover ul{
     overflow-y:  scroll;
 }
 #wrapper main article{
-    background-color: #fff;
+    background-color: #333;
     padding:1em;
     margin-bottom: 1em ;
-    border-radius: 1em;
+    border-radius: 0 1em 1em 1em;
+    border: 1px solid #0d1c58;
 }
 #wrapper main article h3{
     margin:0;

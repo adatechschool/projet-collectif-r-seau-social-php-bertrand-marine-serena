@@ -8,12 +8,12 @@
     </head>
     <body>
         <header>
-            <a href='admin.php'><img src="resoc.jpg" alt="Logo de notre réseau social"/></a>
+            <a href='admin.php'><img src="logo_dis_serena.png" alt="Logo Dis Serena"/></a>
             <?php include("menu.php"); ?>
         </header>
         <div id="wrapper">
             <aside>
-                <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
+                <?php include("userimg.php"); ?>
                 <section>
                     <h3>Présentation</h3>
                     <p>Sur cette page vous trouverez les derniers messages de
